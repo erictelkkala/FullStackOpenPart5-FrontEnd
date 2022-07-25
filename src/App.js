@@ -12,6 +12,10 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
+    // If the user is cached, get the user from localStorage
+    if (localStorage.getItem("user")) {
+      setUser(JSON.parse(localStorage.getItem("user")));
+    }
   }, []);
 
   const handleLogin = async (event) => {
@@ -23,6 +27,7 @@ const App = () => {
         password,
       });
       setUser(user);
+      window.localStorage.setItem("user", JSON.stringify(user));
       setUsername("");
       setPassword("");
     } catch (exception) {
@@ -31,6 +36,11 @@ const App = () => {
         setErrorMessage(null);
       }, 5000);
     }
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    window.localStorage.removeItem("user");
   };
 
   const loginForm = () => (
@@ -46,6 +56,7 @@ const App = () => {
         password
         <input
           value={password}
+          type="password"
           onChange={({ target }) => setPassword(target.value)}
         />
       </div>
@@ -53,23 +64,32 @@ const App = () => {
     </form>
   );
 
-  const blogList = () => (
-    <div>
-      {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
-      ))}
-    </div>
-  );
+  const logoutButton = () => <button onClick={handleLogout}>logout</button>;
+
+  function BlogList() {
+    return (
+      <div>
+        {blogs.map((blog) => (
+          <Blog key={blog.id} blog={blog} />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div>
       <h2>blogs</h2>
+
       {/* <Notification message={errorMessage} /> */}
       {user === null ? (
         loginForm()
       ) : (
         <div>
-          <p> {user.name} logged in</p> {blogList()}
+          <p>
+            {" "}
+            {user.name} logged in {logoutButton()}
+          </p>{" "}
+          <BlogList />
         </div>
       )}
     </div>
