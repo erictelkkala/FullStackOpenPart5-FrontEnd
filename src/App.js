@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+import newLoginForm from "./components/LoginForm";
+import newBlogForm from "./components/BlogForm";
 
 const App = () => {
   const [errorMessage, setErrorMessage] = useState(null);
@@ -9,6 +11,9 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [newTitle, setNewTitle] = useState("");
+  const [newAuthor, setNewAuthor] = useState("");
+  const [newUrl, setNewUrl] = useState("");
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -43,25 +48,45 @@ const App = () => {
     window.localStorage.removeItem("user");
   };
 
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-          value={username}
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          value={password}
-          type="password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>
+  async function addBlog(event) {
+    event.preventDefault();
+    const blog = {
+      title: newTitle,
+      author: newAuthor,
+      url: newUrl,
+    };
+    try {
+      const newBlog = await blogService.create(blog, user);
+      setBlogs(blogs.concat(newBlog));
+      setNewTitle("");
+      setNewAuthor("");
+      setNewUrl("");
+    } catch (exception) {
+      setErrorMessage("Error adding blog");
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 5000);
+    }
+  }
+
+  // Declare the login form imported from the LoginForm component
+  const loginForm = newLoginForm(
+    handleLogin,
+    username,
+    setUsername,
+    password,
+    setPassword
+  );
+
+  // Declare the blog form imported from the BlogForm component
+  const blogForm = newBlogForm(
+    addBlog,
+    newTitle,
+    setNewTitle,
+    newAuthor,
+    setNewAuthor,
+    newUrl,
+    setNewUrl
   );
 
   const logoutButton = () => <button onClick={handleLogout}>logout</button>;
@@ -89,6 +114,7 @@ const App = () => {
             {" "}
             {user.name} logged in {logoutButton()}
           </p>{" "}
+          {blogForm()}
           <BlogList />
         </div>
       )}
