@@ -1,41 +1,24 @@
-function newBlogForm(
-  addBlog,
-  newTitle,
-  setNewTitle,
-  newAuthor,
-  setNewAuthor,
-  newUrl,
-  setNewUrl
-) {
-  return () => (
+const BlogForm = (props) => {
+  return (
     <div>
       <h2>create new</h2>
-      <form onSubmit={addBlog}>
+      <form onSubmit={props.addBlog}>
         <div>
           title
-          <input
-            value={newTitle}
-            onChange={({ target }) => setNewTitle(target.value)}
-          />
+          <input value={props.newTitle} onChange={props.handleChangeTitle} />
         </div>
         <div>
           author
-          <input
-            value={newAuthor}
-            onChange={({ target }) => setNewAuthor(target.value)}
-          />
+          <input value={props.newAuthor} onChange={props.handleChangeAuthor} />
         </div>
         <div>
           url
-          <input
-            value={newUrl}
-            onChange={({ target }) => setNewUrl(target.value)}
-          />
+          <input value={props.newUrl} onChange={props.handleChangeUrl} />
         </div>
         <button type="submit">create</button>
       </form>
     </div>
   );
-}
+};
 
-export default newBlogForm;
+export default BlogForm;

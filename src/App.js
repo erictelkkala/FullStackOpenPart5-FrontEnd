@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
-import newLoginForm from "./components/LoginForm";
-import newBlogForm from "./components/BlogForm";
+import LoginForm from "./components/LoginForm";
+import BlogForm from "./components/BlogForm";
 import Notification from "./components/Notification";
 
 const App = () => {
@@ -85,24 +85,13 @@ const App = () => {
   }
 
   // Declare the login form imported from the LoginForm component
-  const loginForm = newLoginForm(
-    handleLogin,
-    username,
-    setUsername,
-    password,
-    setPassword
-  );
-
-  // Declare the blog form imported from the BlogForm component
-  const blogForm = newBlogForm(
-    addBlog,
-    newTitle,
-    setNewTitle,
-    newAuthor,
-    setNewAuthor,
-    newUrl,
-    setNewUrl
-  );
+  // const loginForm = newLoginForm(
+  //   handleLogin,
+  //   username,
+  //   setUsername,
+  //   password,
+  //   setPassword
+  // );
 
   const logoutButton = () => <button onClick={handleLogout}>logout</button>;
 
@@ -129,14 +118,28 @@ const App = () => {
 
       {/* Display the login form if the user is not logged in */}
       {user === null ? (
-        loginForm()
+        <LoginForm
+          handleLogin={handleLogin}
+          username={username}
+          handleChangeUsername={({ target }) => setUsername(target.value)}
+          password={password}
+          handleChangePassword={({ target }) => setPassword(target.value)}
+        />
       ) : (
         <div>
           <p>
             {" "}
             {user.name} logged in {logoutButton()}
           </p>{" "}
-          {blogForm()}
+          <BlogForm
+            addBlog={addBlog}
+            newTitle={newTitle}
+            handleChangeTitle={({ target }) => setNewTitle(target.value)}
+            newAuthor={newAuthor}
+            handleChangeAuthor={({ target }) => setNewAuthor(target.value)}
+            newUrl={newUrl}
+            handleChangeUrl={({ target }) => setNewUrl(target.value)}
+          />
           <BlogList />
         </div>
       )}

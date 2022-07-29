@@ -1,30 +1,21 @@
-function newLoginForm(
-  handleLogin,
-  username,
-  setUsername,
-  password,
-  setPassword
-) {
-  return () => (
-    <form onSubmit={handleLogin}>
+const LoginForm = (props) => {
+  return (
+    <form onSubmit={props.handleLogin}>
       <div>
         username
-        <input
-          value={username}
-          onChange={({ target }) => setUsername(target.value)}
-        />
+        <input value={props.username} onChange={props.handleChangeUsername} />
       </div>
       <div>
         password
         <input
-          value={password}
+          value={props.password}
           type="password"
-          onChange={({ target }) => setPassword(target.value)}
+          onChange={props.handleChangePassword}
         />
       </div>
       <button type="submit">login</button>
     </form>
   );
-}
+};
 
-export default newLoginForm;
+export default LoginForm;
