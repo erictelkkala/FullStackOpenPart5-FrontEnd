@@ -59,7 +59,9 @@ const App = () => {
     try {
       const newBlog = await blogService.create(blog, user);
       setBlogs(blogs.concat(newBlog));
-      setSM("A new blog" + newBlog.title + " by " + newBlog.author + " added");
+      setSM(
+        'A new blog "' + newBlog.title + '" by "' + newBlog.author + '" added'
+      );
       setNewTitle("");
       setNewAuthor("");
       setNewUrl("");
