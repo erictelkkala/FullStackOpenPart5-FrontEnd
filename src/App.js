@@ -14,9 +14,7 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [newTitle, setNewTitle] = useState("");
-  const [newAuthor, setNewAuthor] = useState("");
-  const [newUrl, setNewUrl] = useState("");
+
   const blogFormRef = useRef();
 
   useEffect(() => {
@@ -51,13 +49,7 @@ const App = () => {
     window.localStorage.removeItem("user");
   };
 
-  async function addBlog(event) {
-    event.preventDefault();
-    const blog = {
-      title: newTitle,
-      author: newAuthor,
-      url: newUrl,
-    };
+  async function addBlog(blog) {
     try {
       // Toggle the visibility
       blogFormRef.current.toggleVisibility();
@@ -66,9 +58,6 @@ const App = () => {
       setSM(
         'A new blog "' + newBlog.title + '" by "' + newBlog.author + '" added'
       );
-      setNewTitle("");
-      setNewAuthor("");
-      setNewUrl("");
     } catch (exception) {
       setEM("Error adding blog");
     }
@@ -127,15 +116,7 @@ const App = () => {
             {user.name} logged in {logoutButton()}
           </p>{" "}
           <Togglable buttonLabel="Add a new blog" ref={blogFormRef}>
-            <BlogForm
-              addBlog={addBlog}
-              newTitle={newTitle}
-              handleChangeTitle={({ target }) => setNewTitle(target.value)}
-              newAuthor={newAuthor}
-              handleChangeAuthor={({ target }) => setNewAuthor(target.value)}
-              newUrl={newUrl}
-              handleChangeUrl={({ target }) => setNewUrl(target.value)}
-            />
+            <BlogForm createBlog={addBlog} />
           </Togglable>
           <BlogList />
         </div>
