@@ -49,6 +49,21 @@ const App = () => {
     window.localStorage.removeItem("user");
   };
 
+  const handleLike = async (blog) => {
+    const blogToUpdate = { ...blog };
+    // Increment the likes
+    blogToUpdate.likes = blog.likes + 1;
+    // Remove the user from the blog
+    delete blogToUpdate.user;
+    const updatedBlog = await blogService.update(blogToUpdate, user);
+    // Since the user is not sent to the server, we need to add it back so the client does not need to refresh the page
+    updatedBlog.user = blog.user;
+    // Update the blogs array
+    setBlogs(blogs.map((b) => (b.id !== blog.id ? b : updatedBlog)));
+    // Show a success message
+    setSM(`Liked ${blog.title}`);
+  };
+
   async function addBlog(blog) {
     try {
       // Toggle the visibility
@@ -79,15 +94,15 @@ const App = () => {
 
   const logoutButton = () => <button onClick={handleLogout}>logout</button>;
 
-  function BlogList() {
+  const BlogList = () => {
     return (
       <div>
         {blogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} like={handleLike} />
         ))}
       </div>
     );
-  }
+  };
 
   return (
     <div>
@@ -118,7 +133,7 @@ const App = () => {
           <Togglable buttonLabel="Add a new blog" ref={blogFormRef}>
             <BlogForm createBlog={addBlog} />
           </Togglable>
-          <BlogList />
+          <BlogList> </BlogList>
         </div>
       )}
     </div>

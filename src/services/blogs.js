@@ -17,5 +17,20 @@ const create = async (newObject, user) => {
   return response.data;
 };
 
+const update = async (updatedObject, user) => {
+  // Get the token from the user object
+  const config = {
+    headers: { Authorization: `bearer ${JSON.stringify(user.token)}` },
+  };
+  const request = axios.put(
+    `${baseUrl}/${updatedObject.id}`,
+    updatedObject,
+    config
+  );
+  const response = await request;
+
+  return response.data;
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, create };
+export default { getAll, create, update };
