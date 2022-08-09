@@ -24,3 +24,5 @@ yarn-error.log*
 
 # Visual Studio Code settings folder
 .vscode/settings.json
+# VS Code workspace
+FullStackOpenPart5-FrontEnd.code-workspace

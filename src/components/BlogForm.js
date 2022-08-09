@@ -1,25 +1,26 @@
-import { useState } from "react";
+import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const BlogForm = (props) => {
-  const [newTitle, setNewTitle] = useState("");
-  const [newAuthor, setNewAuthor] = useState("");
-  const [newUrl, setNewUrl] = useState("");
+  const [newTitle, setNewTitle] = useState('')
+  const [newAuthor, setNewAuthor] = useState('')
+  const [newUrl, setNewUrl] = useState('')
 
   async function addBlog(event) {
-    event.preventDefault();
+    event.preventDefault()
     const blog = {
       title: newTitle,
       author: newAuthor,
       url: newUrl,
-    };
+    }
     try {
       // Send the blog to the parent component
-      await props.createBlog(blog);
-      setNewTitle("");
-      setNewAuthor("");
-      setNewUrl("");
+      await props.createBlog(blog)
+      setNewTitle('')
+      setNewAuthor('')
+      setNewUrl('')
     } catch (exception) {
-      console.log(exception);
+      console.log(exception)
     }
   }
 
@@ -51,7 +52,11 @@ const BlogForm = (props) => {
         <button type="submit">create</button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default BlogForm;
+BlogForm.propTypes = {
+  createBlog: PropTypes.func.isRequired,
+}
+
+export default BlogForm
