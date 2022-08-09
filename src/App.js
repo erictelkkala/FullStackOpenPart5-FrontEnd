@@ -95,9 +95,11 @@ const App = () => {
   const logoutButton = () => <button onClick={handleLogout}>logout</button>;
 
   const BlogList = () => {
+    // Sort the blogs by likes
+    const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes);
     return (
       <div>
-        {blogs.map((blog) => (
+        {sortedBlogs.map((blog) => (
           <Blog key={blog.id} blog={blog} like={handleLike} />
         ))}
       </div>
