@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Blog = (props, refs) => {
+const Blog = (props) => {
   const [visible, setVisible] = useState(false);
 
   const hidden = { display: visible ? "" : "none" };
@@ -35,6 +35,8 @@ const Blog = (props, refs) => {
         <button onClick={() => props.like(blog)}>Like</button>
         <br></br>
         {blog.user.name}
+        <br></br>
+        <button onClick={() => props.remove(blog)}>Remove</button>
       </div>
     </article>
   );

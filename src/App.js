@@ -64,6 +64,27 @@ const App = () => {
     setSM(`Liked ${blog.title}`);
   };
 
+  const handleRemove = async (blog) => {
+    const ok = await window.confirm(`Remove ${blog.title} by ${blog.author}?`);
+    if (ok) {
+      try {
+        await blogService.remove(blog, user);
+        // Remove the blog from the blogs array
+        setBlogs(blogs.filter((b) => b.id !== blog.id));
+        setSM(`${blog.title} by ${blog.author} removed`);
+      } catch (exception) {
+        if (exception.response.status === 404) {
+          setEM(`${blog.title} by ${blog.author} not found`);
+          // The user token expires in 1 hour, so display an error message for that
+        } else if (exception.response.status === 500) {
+          setEM(`Please log in again`);
+        } else {
+          setEM(`${blog.title} by ${blog.author} could not be removed`);
+        }
+      }
+    }
+  };
+
   async function addBlog(blog) {
     try {
       // Toggle the visibility
@@ -100,7 +121,12 @@ const App = () => {
     return (
       <div>
         {sortedBlogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} like={handleLike} />
+          <Blog
+            key={blog.id}
+            blog={blog}
+            like={handleLike}
+            remove={handleRemove}
+          />
         ))}
       </div>
     );

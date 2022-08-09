@@ -20,7 +20,7 @@ const create = async (newObject, user) => {
 const update = async (updatedObject, user) => {
   // Get the token from the user object
   const config = {
-    headers: { Authorization: `bearer ${JSON.stringify(user.token)}` },
+    headers: { Authorization: `bearer ${user.token}` },
   };
   const request = axios.put(
     `${baseUrl}/${updatedObject.id}`,
@@ -32,5 +32,16 @@ const update = async (updatedObject, user) => {
   return response.data;
 };
 
+const remove = async (removedObject, user) => {
+  // Get the token from the user object
+  const config = {
+    headers: { Authorization: `bearer ${user.token}` },
+  };
+  const request = axios.delete(`${baseUrl}/${removedObject.id}`, config);
+  const response = await request;
+
+  return response.data;
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, create, update };
+export default { getAll, create, update, remove };
