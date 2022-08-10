@@ -37,9 +37,10 @@ const Blog = (props) => {
           {blog.url}
         </a>
         <br></br>
-        {blog.likes} likes{' '}
-        <button onClick={() => props.like(blog)}>Like</button>
-        <br></br>
+        <div className="likes">
+          {blog.likes} likes {''}
+          <button onClick={() => props.like(blog)}>Like</button>
+        </div>
         {blog.user.name}
         <br></br>
         <button onClick={() => props.remove(blog)}>Remove</button>
