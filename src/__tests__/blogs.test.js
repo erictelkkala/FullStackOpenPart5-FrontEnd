@@ -65,3 +65,32 @@ test('Renders url and likes when clicked', async () => {
   const likes = container.querySelector('.likes')
   expect(likes).toHaveTextContent('0 likes')
 })
+
+test('Clicking the like button twice sends the event twice to the event handler', async () => {
+  // User setup
+  const user = userEvent.setup()
+  const blog = {
+    title: 'Test title',
+    author: 'Robert C. Martin',
+    url: 'https://www.robertcmartin.com/',
+    likes: 0,
+    user: {
+      name: 'Robert C. User',
+    },
+  }
+
+  // Feed the blog and the mock functions to the component
+  render(<Blog blog={blog} like={handleLike} remove={handleRemove} />)
+
+  // Find the button to expand the blog
+  const button = screen.getByText('Expand')
+  await user.click(button)
+
+  // Find the like button
+  const likeButton = screen.getByText('Like')
+  await user.click(likeButton)
+  await user.click(likeButton)
+
+  // Check that the event handler was called twice
+  expect(handleLike.mock.calls.length).toBe(2)
+})
