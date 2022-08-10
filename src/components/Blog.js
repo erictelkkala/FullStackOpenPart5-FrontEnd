@@ -11,6 +11,7 @@ const Blog = (props) => {
 
   const blogStyle = {
     paddingTop: 10,
+    paddingBottom: 5,
     paddingLeft: 2,
     border: 'solid',
     borderWidth: 1,
@@ -23,14 +24,18 @@ const Blog = (props) => {
 
   return (
     <article style={blogStyle}>
-      {blog.title} {blog.author} {''}
+      <div className="Title_and_author">
+        {blog.title} {blog.author}
+      </div>
       {!visible ? (
         <button onClick={toggleVisibility}>Expand</button>
       ) : (
         <button onClick={toggleVisibility}>Collapse</button>
       )}
-      <div style={hidden}>
-        <a href={blog.url}>{blog.url}</a>
+      <div style={hidden} className="hidden">
+        <a className="blogURL" href={blog.url}>
+          {blog.url}
+        </a>
         <br></br>
         {blog.likes} likes{' '}
         <button onClick={() => props.like(blog)}>Like</button>
