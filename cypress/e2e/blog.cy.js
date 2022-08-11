@@ -1,6 +1,14 @@
 describe('Blog testing', () => {
   beforeEach(function () {
     cy.request('POST', 'http://localhost:3003/api/testing/reset')
+    // User that is added to the database before each test
+    const user = {
+      name: 'root',
+      username: 'root',
+      password: 'secret',
+    }
+    cy.request('POST', 'http://localhost:3003/api/users/', user)
+
     cy.visit('http://localhost:3000')
   })
 
@@ -8,5 +16,21 @@ describe('Blog testing', () => {
     cy.get('#username').should('be.visible')
     cy.get('#password').should('be.visible')
     cy.contains('login').should('be.visible')
+  })
+
+  describe('Login', () => {
+    it('succeeds with correct credentials', () => {
+      cy.get('#username').type('root')
+      cy.get('#password').type('secret')
+      cy.contains('login').click()
+      cy.contains('root logged in')
+    })
+
+    it('fails with wrong credentials', () => {
+      cy.get('#username').type('root')
+      cy.get('#password').type('wrong')
+      cy.contains('login').click()
+      cy.get('.error').contains('Wrong username or password')
+    })
   })
 })
