@@ -31,6 +31,8 @@ describe('Blog testing', () => {
       cy.get('#password').type('wrong')
       cy.contains('login').click()
       cy.get('.error').contains('Wrong username or password')
+      // Check that the error is displayed in red
+      cy.get('.error').should('have.css', 'color', 'rgb(255, 0, 0)')
     })
   })
 })
